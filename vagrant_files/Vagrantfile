@@ -4,18 +4,21 @@ Vagrant.configure("2") do |config|
 
   # VM settings
   config.vm.hostname = "devop-assignment-vm"
-  config.vm.network "public_network", bridge: "Ethernet0"
+  # config.vm.network "public_network", bridge: "Ethernet0" # ToDo - Change it to Nat interface with static ip for the dns resolving
 
   # Optional: Forward SSH port
-  config.vm.network "forwarded_port", guest: 22, host: 2222
+  # config.vm.network "forwarded_port", guest: 22, host: 2222 // ToDo - Delete Later
+  config.vm.network "forwarded_port", guest: 443, host: 443
+  config.vm.network "forwarded_port", guest: 80, host: 80
+  config.vm.network "forwarded_port", guest: 3000, host: 3000
 
   # Resources
   config.vm.provider "virtualbox" do |vb|
-    vb.memory = "2048"
-    vb.cpus = 2
+    vb.memory = "8192"
+    vb.cpus = 8
 	
   # Copy local folder into VM (one-time copy)
-  config.vm.provision "file", source: "../app/frontend", destination: "/home/vagrant/my_copied_folder"
+  config.vm.provision "file", source: "../app", destination: "/home/vagrant/app"
 
   end
 
@@ -24,17 +27,38 @@ Vagrant.configure("2") do |config|
   # installing docker utils
   config.vm.provision "shell", inline: <<-SHELL
     sudo -i
-	
+	echo "================================"
 	echo "=== Adding Mirrors and repos ==="
+	echo "================================"
+	
 	sed -i 's|mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-Base.repo
 	sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-Base.repo
 	yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 	
+	echo "==========================="
 	echo "=== installing Packages ==="
+	echo "==========================="
 	yum install -y yum-utils docker-ce docker-ce-cli containerd.io
 	
+	echo "======================="
 	echo "=== Enable Services ==="
+	echo "======================="
 	systemctl start docker
 	systemctl enable docker
+
+	echo "======================="
+	echo "=== Creating Images ==="
+	echo "======================="
+	
+	cd /home/vagrant/app/backend
+	
+	echo "======================"
+	echo "=== Installing k3s ==="
+	echo "======================"
+	curl -sfL https://get.k3s.io | sh -s - --disable traefik --write-kubeconfig-mode 644 --node-name k3s-master
+	ln -s /usr/local/bin/kubectl /usr/bin/kubectl # enable builtin k3s kubectl globally
+	ln -s /usr/local/bin/k3s /usr/bin/k3s
+
+
   SHELL
 end
