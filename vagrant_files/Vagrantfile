@@ -1,0 +1,40 @@
+Vagrant.configure("2") do |config|
+  # Use CentOS 7 official box
+  config.vm.box = "centos/7"
+
+  # VM settings
+  config.vm.hostname = "devop-assignment-vm"
+  config.vm.network "public_network", bridge: "Ethernet0"
+
+  # Optional: Forward SSH port
+  config.vm.network "forwarded_port", guest: 22, host: 2222
+
+  # Resources
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = "2048"
+    vb.cpus = 2
+	
+  # Copy local folder into VM (one-time copy)
+  config.vm.provision "file", source: "../app/frontend", destination: "/home/vagrant/my_copied_folder"
+
+  end
+
+  # Provisioning (optional)
+  
+  # installing docker utils
+  config.vm.provision "shell", inline: <<-SHELL
+    sudo -i
+	
+	echo "=== Adding Mirrors and repos ==="
+	sed -i 's|mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-Base.repo
+	sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-Base.repo
+	yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+	
+	echo "=== installing Packages ==="
+	yum install -y yum-utils docker-ce docker-ce-cli containerd.io
+	
+	echo "=== Enable Services ==="
+	systemctl start docker
+	systemctl enable docker
+  SHELL
+end
