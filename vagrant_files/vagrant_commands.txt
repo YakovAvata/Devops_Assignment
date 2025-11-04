@@ -3,3 +3,4 @@ delete vm - vagrant destroy -f
 delete all pods - kubectl delete pods --all -n default
 ssh to container - kubectl exec -it my-app-deployment-65c47b989c-49k9j -c backend-app -- /bin/sh
 restart pod - kubectl rollout restart deployment --namespace default
+check nginx services - kubectl get svc -n ingress-nginx
