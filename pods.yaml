@@ -30,8 +30,8 @@ spec:
           ports:
             - containerPort: 3000
           env:
-            - name: MONGO_URI
-              value: "mongodb://localhost:27017/mydb"
+            - name: MONGODB_URL
+              value: "mongodb://localhost:27017"
 
         - name: frontend-app
           image: frontend-app:latest
