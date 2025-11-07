@@ -1,3 +1,6 @@
+metadata:
+  name: frontend-deployment
+
 replicaCount: 1
 
 image:
