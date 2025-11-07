@@ -1,0 +1,17 @@
+metadata:
+  name: backend
+
+replicaCount: 1
+
+image:
+  repository: backend-app
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+
+containerPort: 80
+
+labels:
+  app: backend-app
