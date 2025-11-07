@@ -1,3 +1,6 @@
+metadata:
+  name: frontend
+
 replicaCount: 1
 
 image:
