@@ -1,0 +1,17 @@
+metadata:
+  name: mongodb
+
+labels:
+  name: database
+
+replicaCount: 1
+
+image:
+  repository: mongo
+  tag: "6.0"
+  pullPolicy: IfNotPresent
+
+service:
+  port: 27017
+
+volumeMountPath: /data/db

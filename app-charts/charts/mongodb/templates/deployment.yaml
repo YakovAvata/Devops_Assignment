@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.metadata.name }}-deployment
+  labels:
+    app: {{ .Values.labels.name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.labels.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.labels.name }}
+    spec:
+      containers:
+        - name: mongodb
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.port }}
+          volumeMounts:
+            - name: mongo-data
+              mountPath: {{ .Values.volumeMountPath }}
+      volumes:
+        - name: mongo-data
+          emptyDir: {}

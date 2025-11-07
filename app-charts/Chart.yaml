@@ -1,6 +1,6 @@
 apiVersion: v2
-name: app-charts
-description: A Helm chart for Kubernetes
+name: Backend app helm chart
+description: Backend app helm chart
 
 # A chart can be either an 'application' or a 'library' chart.
 #
@@ -22,3 +22,15 @@ version: 0.1.0
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
 appVersion: "1.1.0"
+
+
+dependencies:
+  - name: mongodb
+    version: 0.1.0
+    repository: "file://./charts/mongodb"
+    condition: mongodb.enabled
+
+  - name: frontend-app
+    version: 0.1.0
+    repository: "file://./charts/frontend-app"
+    condition: frontend-app.enabled
