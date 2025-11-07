@@ -1,5 +1,5 @@
 metadata:
-  name: frontend-deployment
+  name: frontend
 
 replicaCount: 1
 
