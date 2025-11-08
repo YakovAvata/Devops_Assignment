@@ -9,6 +9,7 @@ spec:
     - protocol: TCP
       port: 3000
       targetPort: 3000
-  type: LoadBalancer
+      nodePort: 30380
+  type: NodePort
   externalIPs:
     - 10.0.2.15
