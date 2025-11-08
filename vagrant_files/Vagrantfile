@@ -61,7 +61,6 @@ Vagrant.configure("2") do |config|
 	echo "=== Creating Images ==="
 	echo "======================="
 	
-    # kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
 	cd /home/vagrant/app/backend/
     docker build -t backend-app .
     docker save -o backend-app.tar backend-app:latest
@@ -78,8 +77,9 @@ Vagrant.configure("2") do |config|
     cd /home/vagrant
 	mkdir project
 	cd project
-	#git clone --branch assignement-v2 https://github.com/YakovAvata/Devops_Assignment.git
-	#helm install test-app Devops_Assignment/app-charts/
+	git clone --branch assignement-v2 https://github.com/YakovAvata/Devops_Assignment.git
+	helm dependency update Devops_Assignment/app-charts/
+	helm install test-app Devops_Assignment/app-charts/
 	#sleep 10
 	#kubectl apply -f pods.yaml
   SHELL
