@@ -18,10 +18,4 @@ labels:
   app: frontend-app
 
 
-ingress-nginx:
-  fullnameOverride: ingress-nginx
-  enabled: true
-  controller:
-    service:
-      type: LoadBalancer
 
