@@ -9,5 +9,6 @@ spec:
     - protocol: TCP
       port: 3000
       targetPort: 3000
+  type: LoadBalancer
   externalIPs:
     - 10.0.2.15
