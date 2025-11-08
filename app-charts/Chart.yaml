@@ -10,9 +10,9 @@ dependencies:
   - name: mongodb
     version: 0.1.0
     repository: "file://./charts/mongodb"
-    condition: mongodb.enabled
+#    condition: mongodb.enabled
 
   - name: frontend-app
     version: 0.1.0
     repository: "file://./charts/frontend-app"
-    condition: frontend-app.enabled
+#    condition: frontend-app.enabled
