@@ -5,6 +5,7 @@ replicaCount: 1
 
 image:
   repository: backend-app
+  tag: latest
   pullPolicy: IfNotPresent
 
 service:
