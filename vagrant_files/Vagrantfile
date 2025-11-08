@@ -39,6 +39,8 @@ Vagrant.configure("2") do |config|
 	echo "=== installing Packages ==="
 	echo "==========================="
 	yum install -y yum-utils docker-ce docker-ce-cli containerd.io
+	curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash # install helm
+	sudo yum install git -y # install git
 	
 	echo "======================="
 	echo "=== Enable Services ==="
@@ -72,7 +74,11 @@ Vagrant.configure("2") do |config|
 	echo "======================"
 
     cd /home/vagrant
-	sleep 10
-	kubectl apply -f pods.yaml
+	mkdir project
+	cd prjected
+	git clone --branch assignement-v2 https://github.com/YakovAvata/Devops_Assignment.git
+	helm install test-app Devops_Assignment/app-charts/
+	#sleep 10
+	#kubectl apply -f pods.yaml
   SHELL
 end
