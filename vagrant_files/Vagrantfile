@@ -54,6 +54,8 @@ Vagrant.configure("2") do |config|
 	curl -sfL https://get.k3s.io | sh -s - --disable traefik --write-kubeconfig-mode 644 --node-name k3s-master
 	ln -s /usr/local/bin/kubectl /usr/bin/kubectl # enable builtin k3s kubectl globally
 	ln -s /usr/local/bin/k3s /usr/bin/k3s
+	ln -s /usr/local/bin/helm /usr/bin/helm
+	export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 
 	echo "======================="
 	echo "=== Creating Images ==="
@@ -75,7 +77,7 @@ Vagrant.configure("2") do |config|
 
     cd /home/vagrant
 	mkdir project
-	cd prjected
+	cd project
 	git clone --branch assignement-v2 https://github.com/YakovAvata/Devops_Assignment.git
 	helm install test-app Devops_Assignment/app-charts/
 	#sleep 10
