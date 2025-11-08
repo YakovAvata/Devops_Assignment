@@ -16,15 +16,7 @@ Vagrant.configure("2") do |config|
     vb.memory = "8192"
     vb.cpus = 8
   end
-	
-  # Copy local folder into VM (one-time copy)
-  config.vm.provision "file", source: "../app", destination: "/home/vagrant/app"
-  config.vm.provision "file", source: "../pods.yaml", destination: "/home/vagrant/pods.yaml"
-
-
-  # Provisioning (optional)
   
-  # installing docker utils
   config.vm.provision "shell", inline: <<-SHELL
     sudo -i
 	echo "================================"
@@ -38,9 +30,8 @@ Vagrant.configure("2") do |config|
 	echo "==========================="
 	echo "=== installing Packages ==="
 	echo "==========================="
-	yum install -y yum-utils docker-ce docker-ce-cli containerd.io
+	yum install -y yum-utils docker-ce docker-ce-cli containerd.io git
 	curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash # install helm
-	sudo yum install git -y # install git
 	
 	echo "======================="
 	echo "=== Enable Services ==="
@@ -61,26 +52,24 @@ Vagrant.configure("2") do |config|
 	echo "=== Creating Images ==="
 	echo "======================="
 	
-	cd /home/vagrant/app/backend/
+	mkdir /home/vagrant/project
+	cd /home/vagrant/project
+	git clone --branch assignement-v2 https://github.com/YakovAvata/Devops_Assignment.git
+	
+	cd /home/vagrant/project/Devops_Assignment/app/backend/
     docker build -t backend-app .
     docker save -o backend-app.tar backend-app:latest
     k3s ctr images import backend-app.tar
-	cd /home/vagrant/app/frontend/
+	cd /home/vagrant/project/Devops_Assignment/app/frontend/
     docker build -t frontend-app .
     docker save -o frontend-app.tar frontend-app:latest
     k3s ctr image import frontend-app.tar
 	
-	echo "======================"
-	echo "=== Run Containers ==="
-	echo "======================"
+	echo "========================="
+	echo "=== Deploy Helm-Chart ==="
+	echo "========================="
 
-    cd /home/vagrant
-	mkdir project
-	cd project
-	git clone --branch assignement-v2 https://github.com/YakovAvata/Devops_Assignment.git
-	helm dependency update Devops_Assignment/app-charts/
-	helm install test-app Devops_Assignment/app-charts/
-	#sleep 10
-	#kubectl apply -f pods.yaml
+	helm dependency update /home/vagrant/project/Devops_Assignment/app-charts/
+	helm install test-app /home/vagrant/project/Devops_Assignment/app-charts/
   SHELL
 end
