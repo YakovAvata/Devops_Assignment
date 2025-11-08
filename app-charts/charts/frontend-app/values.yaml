@@ -16,3 +16,11 @@ containerPort: 80
 
 labels:
   app: frontend-app
+
+
+ingress-nginx:
+  enabled: true
+  controller:
+    service:
+      type: LoadBalancer
+

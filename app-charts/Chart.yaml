@@ -18,8 +18,3 @@ dependencies:
     condition: frontend-app.enabled
 
 
-  - name: ingress-nginx
-    version: "*"    # Check latest version
-    repository: https://kubernetes.github.io/ingress-nginx
-    condition: ingress-nginx.enabled
-
