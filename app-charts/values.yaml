@@ -16,3 +16,11 @@ containerPort: 3000
 
 labels:
   app: backend-app
+
+
+ingress-nginx:
+  enabled: true
+  controller:
+    service:
+      type: LoadBalancer
+
