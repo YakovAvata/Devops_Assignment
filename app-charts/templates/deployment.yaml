@@ -16,6 +16,7 @@ spec:
         - name: {{ .Values.labels.app }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["sh", "-c", "node index.js"]
           ports:
             - containerPort: {{ .Values.containerPort }}
           env:
