@@ -4,12 +4,11 @@ metadata:
   name: backend-service
 spec:
   selector:
-    app: my-app
+    app: backend-app
   ports:
     - protocol: TCP
       port: 3000
       targetPort: 3000
-      nodePort: 30380
-  type: NodePort
+  type: LoadBalancer
   externalIPs:
     - 10.0.2.15
