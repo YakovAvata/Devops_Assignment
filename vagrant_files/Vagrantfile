@@ -1,12 +1,13 @@
 Vagrant.configure("2") do |config|
-  # Use CentOS 7 official box
-  config.vm.box = "centos/7"
+  config.vm.box = "rockylinux/9"
+  config.vm.box_version = "6.0.0"  
 
   # VM settings
   config.vm.hostname = "devop-assignment-vm"
+  config.vbguest.auto_update = false
+  config.vm.synced_folder '.', '/vagrant', disabled: true
 
-  # Optional: Forward SSH port
-
+  # Port Forwarding
   config.vm.network "forwarded_port", guest: 443, host: 443
   config.vm.network "forwarded_port", guest: 80, host: 80
   config.vm.network "forwarded_port", guest: 3000, host: 3000
@@ -17,14 +18,12 @@ Vagrant.configure("2") do |config|
     vb.cpus = 8
   end
   
+
   config.vm.provision "shell", inline: <<-SHELL
     sudo -i
 	echo "================================"
 	echo "=== Adding Mirrors and repos ==="
 	echo "================================"
-	
-	sed -i 's|mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-Base.repo
-	sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-Base.repo
 	yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 	
 	echo "==========================="

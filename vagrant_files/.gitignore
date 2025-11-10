@@ -1,1 +1,3 @@
 .vagrant/
+BUILD.bazel
+WORKSPACE.bazel
